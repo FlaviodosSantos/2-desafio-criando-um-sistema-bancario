@@ -13,7 +13,7 @@ Digite um numero correspondente a operação que deseja realizar :
 saldo = 0
 extrato = ""
 num_saques = 0
-LIMITE_DEPOSITO_DIARIO = 500
+LIMITE_POR_SAQUE = 500
 LIMITE_SAQUES_DIARIO = 3
 
 while True:
@@ -26,6 +26,8 @@ while True:
             extrato += f"Depósito: R$ {valor:.2f}\n"
         else:
             print("\n=====>>>> Digite um valor válido. <<<<======")
+
+    elif operacao == '2':
 
     elif operacao == '3':
         print("\n-------------- Extrato --------------")  
