@@ -12,9 +12,13 @@ def menu():
     [1] Depósito
     [2] Saque
     [3] Extrato
+    [4] Criar Usuario
+    [5] Criar Conta
+    [6] Listar Conta
+    [7] Listar Usuarios
     [0] Sair
     
-    """
+    ==> """
     return input(textwrap.dedent(menu))
 
 
@@ -79,6 +83,62 @@ def exibir_extrato(saldo, extrato):
     print(f"\n\033[1;33mSaldo: R$ {saldo:.2f}\033[m") 
     print("\n\033[1;33m--------------------------------------\033[m")
 
+
+def criar_usuario(usuarios):
+    cpf = input("Informe o cpf (somente os numeros):")
+    usuario = filtrar_ususario(cpf, usuarios)
+
+    if usuario:
+        print("\n\033[1;30;41m===>>>> Usuario já existe. <<<<===\033[m")
+        return
+    
+    nome = input("Informe o nome: ")
+    data_nascimento = input("Informe a data de nascimento (dd-mm-aaaa): ")
+    endereco = input("Informe o endereço (logradouro, nº - bairro - cidade/sigla estado): ")
+
+    usuarios.append({"nome": nome, "data_nascimento": data_nascimento, "cpf": cpf, "endereco": endereco})
+
+    print("\n\033[1;32m******* Usuario criado com sucesso. ********\033[m\n")
+
+
+
+def filtrar_ususario(cpf, usuarios):
+    usuarios_filtrados = [usuario for usuario in usuarios if usuario["cpf"] == cpf]
+    return usuarios_filtrados[0] if usuarios_filtrados else None 
+    
+
+def criar_conta(agencia, numero_conta, usuarios):
+    cpf = input("Informe o cpf (somente os numeros):")
+    usuario = filtrar_ususario(cpf, usuarios)
+
+    if usuario:
+        print("\n\033[1;32m******* Conta criada com sucesso. ********\033[m\n")
+        return {"agencia": agencia, "numero_conta": numero_conta, "usuario": usuario}
+    
+    print("\n\033[1;30;41m===>>>> Usuario não existe. <<<<===\033[m")
+
+
+def listar_contas(contas):
+    for conta in contas:
+        linha = f"""\
+            Agência:\t{conta['agencia']}
+            C/C:\t\t{conta['numero_conta']}
+            Titular:\t{conta['usuario']['nome']}
+        """
+        print("=" * 63)
+        print(textwrap.dedent(linha))
+
+def listar_usuarios(usuarios):
+    for usuario in usuarios:
+        linha = f"""\
+            Nome:\t{usuario['nome']}
+            CPF:\t{usuario['cpf']}
+            Data de Nascimento:\t{usuario['data_nascimento']}
+            Endereço:\t{usuario['endereco']}
+        """
+        print("=" * 63)
+        print(textwrap.dedent(linha))
+
 def encerrar():
     print("\033[1;32m********* Obrigado por usar o Banco Python. ***********\033[m\n")
 
@@ -92,7 +152,10 @@ def erro():
 def main():
     saldo = 0
     extrato = ""
-    numero_saques = 0    
+    numero_saques = 0
+    usuarios = [] 
+    contas = [] 
+    AGENCIA = "0001"  
 
     while True:
         operacao = menu()
@@ -104,7 +167,23 @@ def main():
             saldo, extrato, numero_saques = sacar(saldo, extrato, numero_saques)            
 
         elif operacao == '3':
-            exibir_extrato(saldo, extrato)      
+            exibir_extrato(saldo, extrato) 
+
+        elif operacao == '4':
+            criar_usuario(usuarios)
+
+        elif operacao == '5':
+            numero_conta = len(contas) + 1
+            conta = criar_conta(AGENCIA, numero_conta, usuarios)
+
+            if conta:
+                contas.append(conta)
+
+        elif operacao == '6':
+            listar_contas(contas)
+
+        elif operacao == '7':
+            listar_usuarios(usuarios)        
                 
         elif operacao == '0':
             encerrar()
