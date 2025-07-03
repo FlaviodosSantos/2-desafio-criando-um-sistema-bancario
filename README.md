@@ -54,3 +54,16 @@ Projeto desenvolvido para o desafio do bootcamp Santander 2025 - backend com pyt
 ## Dica
 
  Para vincular um usuário a uma conta, filtre a lista de usuários buscando o número do CPF informado para cada usuário da lista.
+
+## Novas funções
+
+* Listar contas
+* Listar usuários
+
+## Mensagens
+
+Mensagens coloridas : 
+
+* erro são vermelhas
+* sucesso são verdes
+* extrato são amarelas
